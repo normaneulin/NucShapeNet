@@ -1,5 +1,6 @@
 import torch
 import torch.nn as nn
+import torch.nn.functional as F
 import models.STVit as SA
 
 
@@ -69,7 +70,8 @@ class MLSNet(nn.Module):
             nn.BatchNorm2d(num_features=128)
         )
         self.max_pooling_1 = nn.MaxPool2d(kernel_size=(1, 4), stride=(1, 2))
-        self.lstm = nn.LSTM(42, 21, 6, bidirectional=True, batch_first=True, dropout=0.2)
+        # Input width after conv(5x16) and maxpool(1x4, stride=2) on 147 is 65
+        self.lstm = nn.LSTM(65, 21, 6, bidirectional=True, batch_first=True, dropout=0.2)
         self.convolution_shape_2 = nn.Sequential(
             nn.BatchNorm2d(num_features=128),
             nn.ELU(inplace=True),
@@ -111,6 +113,8 @@ class MLSNet(nn.Module):
         shape, _ = self.lstm(shape)
         shape = shape.unsqueeze(2)
         shape = self.convolution_shape_2(shape)
+        # Align width with sequence branch for concatenation
+        shape = F.adaptive_max_pool2d(shape, (1, seq.size(-1)))
 
         return self.output(torch.cat((shape, seq), dim=1))
 

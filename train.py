@@ -25,7 +25,7 @@ class Trainer:
 
     def fit(self, model, train_loader, val_loader):
         optimizer = optim.Adam(model.parameters(), lr=self.learning_rate, weight_decay=1e-4)
-        scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer=optimizer, patience=5, verbose=1)
+        scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer=optimizer, patience=5)
         for epoch in range(self.epochs):
             model.train()
             pbar = tqdm(train_loader, desc=f"Epoch {epoch}")
