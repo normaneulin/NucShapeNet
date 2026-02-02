@@ -1,0 +1,49 @@
+NucShapeNet Trial 1 — 10-Fold Cross Validation
+
+Overview
+- Task: Nucleosome vs Linker classification (D. melanogaster)
+- Pipeline: MLSNet-based model with 3-mer one-hot sequence (12x145) + 5 DNA shape features (5x147)
+- Validation: Stratified 10-fold cross validation with per-fold internal hold-out for validation
+
+Hyperparameters
+- Folds (k): 10
+- Batch size: 64 (drop_last=True for training loader)
+- Epochs (max): 15
+- Early stopping: patience=5 (on validation loss)
+- Optimizer: Adam (lr=1e-3, weight_decay=1e-4)
+- Scheduler: ReduceLROnPlateau (patience=5) on validation loss
+- Loss: Binary Cross-Entropy (BCE)
+- Evaluation threshold: 0.5
+- Model specifics:
+  - Sequence branch kernels: 3x3, 7x7, 11x11; channels fused
+  - Shape branch attention (STVit)
+  - Shape LSTM input size: 65 after conv+pool; bidirectional; dropout=0.2
+  - Sequence LSTM hidden size: 256; dropout=0.2
+  - Adaptive pooling aligns shape/sequence widths before concatenation
+
+Per-Fold Metrics
+k=10
+Fold 1: Sn=0.831034, Sp=0.792982, ACC=0.812174, MCC=0.624584, F1_Score=0.816949, AUROC=0.895463, PR_AUC=0.880122
+Fold 2: Sn=0.858621, Sp=0.792982, ACC=0.826087, MCC=0.653241, F1_Score=0.832776, AUROC=0.905832, PR_AUC=0.905291
+Fold 3: Sn=0.737931, Sp=0.901754, ACC=0.819130, MCC=0.647826, F1_Score=0.804511, AUROC=0.908203, PR_AUC=0.905366
+Fold 4: Sn=0.710345, Sp=0.912281, ACC=0.810435, MCC=0.634985, F1_Score=0.790787, AUROC=0.912753, PR_AUC=0.908793
+Fold 5: Sn=0.734483, Sp=0.856140, ACC=0.794783, MCC=0.594651, F1_Score=0.783088, AUROC=0.881065, PR_AUC=0.876109
+Fold 6: Sn=0.751724, Sp=0.863158, ACC=0.806957, MCC=0.618348, F1_Score=0.797075, AUROC=0.887514, PR_AUC=0.883716
+Fold 7: Sn=0.879310, Sp=0.715789, ACC=0.798261, MCC=0.603730, F1_Score=0.814696, AUROC=0.895644, PR_AUC=0.904691
+Fold 8: Sn=0.858621, Sp=0.821053, ACC=0.840000, MCC=0.680291, F1_Score=0.844068, AUROC=0.911385, PR_AUC=0.903243
+Fold 9: Sn=0.748276, Sp=0.863158, ACC=0.805217, MCC=0.615114, F1_Score=0.794872, AUROC=0.889111, PR_AUC=0.890946
+Fold 10: Sn=0.879310, Sp=0.810526, ACC=0.845217, MCC=0.691748, F1_Score=0.851419, AUROC=0.908482, PR_AUC=0.891919
+
+10-Fold Averages
+Sn=0.7990 Sp=0.8330 ACC=0.8158 MCC=0.6365 F1_Score=0.8130 AUROC=0.8995 PR-AUC=0.8950
+
+Epoch Losses
+- Note: Per-epoch Train and Val losses were printed to terminal but not persisted. To capture them automatically next runs, run:
+  PowerShell: python train.py | Tee-Object -FilePath "Finetuning Documentations/trial1_10_folds/train_log.txt"
+  Or add a CSV logger in Trainer to write {fold,epoch,train_loss,val_loss}.
+- For this trial, please paste terminal loss logs into train_log.txt to complete this section.
+
+Artifacts
+- Best checkpoints per fold: saved in save_models as MLSNet_fold{k}_best.pth
+- Full checkpoints per fold: saved in save_models as MLSNet_fold{k}.pth
+- Metrics source: save_results/metrics.txt
