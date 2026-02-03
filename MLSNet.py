@@ -75,6 +75,8 @@ class MLSNet(nn.Module):
         shape = shape.float()
         seq = seq.unsqueeze(1)
         shape = shape.unsqueeze(1)
+        
+     
 
         seq_conv1 = self.Conv1(seq)
         seq_conv2 = self.Conv2(seq)
@@ -94,9 +96,11 @@ class MLSNet(nn.Module):
         shape = self.STVit(shape)
         shape = self.convolution_shape_1(shape)
         shape = self.max_pooling_1(shape)
-        shape = shape.squeeze(2)
-        shape, _ = self.lstm(shape)
-        shape = shape.unsqueeze(2)
+        
+        shape = shape.squeeze(2)              # (B, 128, 65)
+        shape, _ = self.lstm(shape)           # (B, 128, 42)
+        shape = shape.unsqueeze(2)            # (B, 128, 1, 42)
+        
         shape = self.convolution_shape_2(shape)
         # Align width with sequence branch for concatenation
         shape = F.adaptive_max_pool2d(shape, (1, seq.size(-1)))
