@@ -53,11 +53,23 @@ Shape features are stacked to a 5×147 matrix (features: MGW, ProT, Roll, HelT, 
 1. Generate master data:
 	- `python NucShapeNet/preprocess_seq_data.py`
 	- `python NucShapeNet/preprocess_shape_data.py`
-2. Train with 10‑fold CV:
+2. Train with 10‑fold CV (flat module layout):
 	- `cd NucShapeNet`
 	- `python train.py`
+	- Key modules now live at the NucShapeNet root: `MLSNet.py`, `STVit.py`, `DataReader.py`, `Embedding.py`, `Evaluator.py`, `Predict.py`.
 
 ## Notes
 
 - Feature order for shapes in the trial is `['EP','HelT','MGW','ProT','Roll']`; keep it consistent across preprocessing and loading.
 - If sequence lengths differ from 147, add pad/truncate logic before 3‑mer encoding to preserve 12×145 input size.
+
+## Prediction Summary
+
+After training, you can generate a per‑fold evaluation summary plot:
+
+```
+cd NucShapeNet
+python Predict.py
+```
+
+Outputs go to `NucShapeNet/save_results/plots/`.

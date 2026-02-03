@@ -1,0 +1,17 @@
+k=5
+Fold 1, Epoch 0, Train_Loss=0.557113, Val_Loss=0.477263
+Fold 1, Epoch 1, Train_Loss=0.436737, Val_Loss=0.537861
+Fold 1, Epoch 2, Train_Loss=0.378286, Val_Loss=0.497690
+Fold 1, Epoch 3, Train_Loss=0.335963, Val_Loss=0.535460
+Fold 1, Epoch 4, Train_Loss=0.292453, Val_Loss=0.555951
+Fold 1, Epoch 5, Train_Loss=0.268891, Val_Loss=0.545513
+Fold 2, Epoch 0, Train_Loss=0.572629, Val_Loss=0.568367
+Fold 2, Epoch 1, Train_Loss=0.448985, Val_Loss=0.505418
+Fold 2, Epoch 2, Train_Loss=0.379250, Val_Loss=0.589444
+Fold 2, Epoch 3, Train_Loss=0.340088, Val_Loss=0.522807
+Fold 2, Epoch 4, Train_Loss=0.313690, Val_Loss=0.516316
+Fold 2, Epoch 5, Train_Loss=0.273438, Val_Loss=0.609674
+Fold 2, Epoch 6, Train_Loss=0.231367, Val_Loss=0.925922
+Fold 3, Epoch 0, Train_Loss=0.580658, Val_Loss=0.630175
+Fold 3, Epoch 1, Train_Loss=0.453216, Val_Loss=0.470342
+Fold 3, Epoch 2, Train_Loss=0.392288, Val_Loss=0.428052

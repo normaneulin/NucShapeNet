@@ -1,7 +1,7 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-import models.STVit as SA
+import STVit as SA
 
 
 class MLSNet(nn.Module):
@@ -19,11 +19,6 @@ class MLSNet(nn.Module):
             nn.ReLU(inplace=True),
             nn.BatchNorm2d(num_features=32)
         )
-       # self.Conv2 = nn.Sequential(
-       #     nn.Conv2d(1, 64, kernel_size=(5, 5), padding=2),
-       #     nn.ReLU(inplace=True),
-       #     nn.BatchNorm2d(num_features=64)
-       # )
         self.Conv2 = nn.Sequential(
             nn.Conv2d(1, 128, kernel_size=(7, 7), padding=3),
             nn.ReLU(inplace=True),
@@ -37,23 +32,13 @@ class MLSNet(nn.Module):
         self.max_pooling_seq1 = nn.MaxPool2d(kernel_size=(3, 3), stride=1, padding=1)
         self.dropout_seq = nn.Dropout(0.2)
         self.convolution_seq_1 = nn.Sequential(
-            # nn.Conv2d(in_channels=224, out_channels=64, kernel_size=(12, 14), stride=(1, 1)),
-            # nn.ReLU(inplace=True),
-            # nn.BatchNorm2d(num_features=64)
-            
-            # we collapse the 12-row height first
             nn.Conv2d(in_channels=224, out_channels=64, kernel_size=(12, 1)),
             nn.ReLU(inplace=True),
             nn.BatchNorm2d(64),
-            
-            # we look at spatial width with a smaller kernel
             nn.Conv2d(in_channels=64, out_channels=64, kernel_size=(1, 7), padding=(0,3)),
             nn.ReLU(inplace=True),
             nn.BatchNorm2d(64),
-            
-            # then we do maxpooling to reduce size
             nn.MaxPool2d(kernel_size=(1, 2))
-            
         )
         self.lstm_seq = nn.LSTM(64, 256, bidirectional=False, batch_first=True)
         self.max_pooling_seq2 = nn.MaxPool2d(kernel_size=(1, 4), stride=(1, 2))

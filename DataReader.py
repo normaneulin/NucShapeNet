@@ -3,11 +3,11 @@ import pandas as pd
 import numpy as np
 import torch
 from torch.utils.data import Dataset
-from Initialization.Embedding import one_hot
+from Embedding import one_hot
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
-MASTER_SEQ_PATH = os.path.join(SCRIPT_DIR, "..", "Datasets", "Master Data", "Sequence", "master_sequences.csv")
-MASTER_SHAPE_DIR = os.path.join(SCRIPT_DIR, "..", "Datasets", "Master Data", "Shape")
+MASTER_SEQ_PATH = os.path.join(SCRIPT_DIR, "Datasets", "Master Data", "Sequence", "master_sequences.csv")
+MASTER_SHAPE_DIR = os.path.join(SCRIPT_DIR, "Datasets", "Master Data", "Shape")
 
 FEATURE_ORDER = ['EP', 'HelT', 'MGW', 'ProT', 'Roll']
 
